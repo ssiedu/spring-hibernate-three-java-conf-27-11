@@ -20,12 +20,18 @@ public class BookController {
 	@Qualifier("bookServiceOld")
 	private BookService bookService;
 	
+	@RequestMapping("deletebook")
+	public ModelAndView deleteBookByCode(@RequestParam("bookcode") int code) {
+		Book book=bookService.deleteBookByCode(code);
+		ModelAndView mv=new ModelAndView("redirect:showall");
+		return mv;
+	}
 	
 	@RequestMapping("showall")
 	public ModelAndView showAllBooks() {
 		List<Book> books=bookService.getAllBooks();
-		ModelAndView mv=new ModelAndView("booklist");
-		mv.addObject("books", books);
+		ModelAndView mv=new ModelAndView("booklist-jstl");
+		mv.addObject("books", books);		//anything we store in ModelAndView is internally stored in request object by default)
 		return mv;
 	}
 	

@@ -1,7 +1,7 @@
 <%@page isELIgnored="false" %>
 <html>
 <body>
-	<h3>Following Details Stored Succssfully : </h3>
+	<h3>Following Details Stored Successfully : </h3>
 	<hr>
 		<pre>
 			Code	${bookinfo.code}
