@@ -1,5 +1,6 @@
 package com.ssi.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,34 @@ public class BookController {
 	@Autowired
 	@Qualifier("bookServiceOld")
 	private BookService bookService;
+	
+	@RequestMapping("springform")
+	public ModelAndView showSampleSpringForm() {
+		ModelAndView mv=new ModelAndView("sample-spring-form");
+		Book book=new Book(); book.setCode(555); book.setSubject("xyz"); book.setTitle("pqr"); book.setAuthor("mno"); book.setPrice(300);
+		List<String> subjects=new ArrayList<String>();
+		subjects.add("java"); subjects.add("python"); subjects.add("sql"); subjects.add("linux"); subjects.add("solaries"); subjects.add("aws");
+		
+		mv.addObject("book", book);
+		mv.addObject("subjects",subjects);
+		return mv;
+	}
+	
+	
+	@RequestMapping("savechanges")
+	public ModelAndView saveChanges(@ModelAttribute("book") Book book) {
+		bookService.saveBook(book);
+		ModelAndView mv=new ModelAndView("redirect:showall");
+		return mv;
+	}
+	
+	@RequestMapping("change")
+	public ModelAndView showUpdateForm(@RequestParam("bookcode") int code) {
+		Book book=bookService.getBookByCode(code);
+		ModelAndView mv=new ModelAndView("update-form");
+		mv.addObject("book",book);
+		return mv;
+	}
 	
 	@RequestMapping("deletebook")
 	public ModelAndView deleteBookByCode(@RequestParam("bookcode") int code) {
