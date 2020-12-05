@@ -1,11 +1,15 @@
 package com.ssi.controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -82,12 +86,30 @@ public class BookController {
 	}
 	
 	@RequestMapping("newbook")
-	public String showBookEntryForm() {
-		return "dataentry";
+	public ModelAndView showBookEntryForm() {
+		ModelAndView mv=new ModelAndView("sample-spring-form");
+		mv.addObject("book",new Book());
+		List<String> subjects=new ArrayList<String>();
+		subjects.add("java"); subjects.add("python"); subjects.add("sql"); subjects.add("linux"); subjects.add("solaries"); subjects.add("aws");
+		Collections.sort(subjects);
+		mv.addObject("subjects",subjects);
+		return mv;
 	}
 	
 	@RequestMapping("savebook")
-	public ModelAndView saveBookDetails(@ModelAttribute("bookinfo") Book book) {
+	public ModelAndView saveBookDetails(@Valid @ModelAttribute("book") Book book, BindingResult result) {
+		
+		if(result.hasErrors()) {
+			ModelAndView mv=new ModelAndView("sample-spring-form");
+			List<String> subjects=new ArrayList<String>();
+			subjects.add("java"); subjects.add("python"); subjects.add("sql"); subjects.add("linux"); subjects.add("solaries"); subjects.add("aws");
+			Collections.sort(subjects);
+			mv.addObject("subjects",subjects);
+			return mv;
+		}
+		
+		
+		
 		bookService.saveBook(book);
 		ModelAndView mv=new ModelAndView("saveconfirm");
 		return mv;

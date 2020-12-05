@@ -2,15 +2,31 @@ package com.ssi.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
 
 @Entity
 public class Book {
 	@Id
+	@Min(value=1001, message="code cant be less than 1001")
 	private int code;
+	@Size(max=15, message="title size cant exceed 15 chars")
 	private String title;
 	private String subject;
+	@Size(min=3, max=20, message="author name must be between 3-20 chars long")
+	@Pattern(regexp="[a-zA-Z]*", message="only alphabates are allowed for author name") 
 	private String author;
+	@Min(value=100, message="lowest book price is 100")
+	@Max(value=1000, message="higest book price is 10000")
+	//@Range(min=100, max=10000, message="price range must be between 100-10000")
 	private int price;
+	
+	
+	
 	public int getCode() {
 		return code;
 	}
