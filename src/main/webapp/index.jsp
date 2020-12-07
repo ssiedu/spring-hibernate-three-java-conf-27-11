@@ -3,6 +3,7 @@
 <h2>Spring-Hibernate-Using-Spring-ORM-Java-Conf</h2>
 <hr>
 	<pre>
+	<a href="mail">Send-A-Mail</a>
 	<a href="newbook">Add-New-Book</a>
 	<a href="searchbook">Search-Book</a>
 	<a href="showall">View-All-Books</a>
