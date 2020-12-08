@@ -1,11 +1,17 @@
 package com.ssi.controllers;
 
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -13,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ssi.entities.Book;
@@ -24,6 +31,26 @@ public class BookController {
 	@Autowired
 	@Qualifier("bookServiceOld")
 	private BookService bookService;
+	
+	
+	@RequestMapping("loadpicture")
+	public void showBook(@RequestParam("code") int code,HttpServletResponse response) {
+		Book book=bookService.getBookByCode(code);
+		Blob pic=book.getPicture();
+		byte b[]=null;
+		try {
+			b=pic.getBytes(1,  (int)pic.length());
+			ServletOutputStream out=response.getOutputStream();
+			out.write(b);
+			out.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 	
 	@RequestMapping("springform")
 	public ModelAndView showSampleSpringForm() {
@@ -97,7 +124,20 @@ public class BookController {
 	}
 	
 	@RequestMapping("savebook")
-	public ModelAndView saveBookDetails(@Valid @ModelAttribute("book") Book book, BindingResult result) {
+	public ModelAndView saveBookDetails(@Valid @ModelAttribute("book") Book book, @RequestParam("f1") MultipartFile file, BindingResult result) {
+		
+		byte b[]=null;
+		try {
+			b=file.getBytes();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Blob blob=BlobProxy.generateProxy(b);
+		
+		book.setPicture(blob);
+		
 		
 		if(result.hasErrors()) {
 			ModelAndView mv=new ModelAndView("sample-spring-form");
@@ -113,5 +153,6 @@ public class BookController {
 		bookService.saveBook(book);
 		ModelAndView mv=new ModelAndView("saveconfirm");
 		return mv;
+		
 	}
 }

@@ -10,6 +10,7 @@
 			Author	${book.author}
 			Price	${book.price}
 		</pre>
+		<img src="loadpicture?code=${book.code}" width="50" height="50"/>
 	<hr>
 	<a href="searchbook">Search-More</a><br>
 	<a href="index.jsp">Home</a><br>

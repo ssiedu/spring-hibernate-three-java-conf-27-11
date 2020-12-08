@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -17,6 +18,13 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @EnableWebMvc
 public class MyJavaConfig {
 
+	
+	@Bean
+	public CommonsMultipartResolver multipartResolver(){
+		CommonsMultipartResolver resolver=new CommonsMultipartResolver();
+		resolver.setMaxUploadSize(1500000);
+		return resolver;
+	}
 	
 	@Bean
 	public JavaMailSenderImpl mailSender(){

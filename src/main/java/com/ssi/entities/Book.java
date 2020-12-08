@@ -1,13 +1,13 @@
 package com.ssi.entities;
 
+import java.sql.Blob;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.Email;
 
 @Entity
 public class Book {
@@ -24,7 +24,7 @@ public class Book {
 	@Max(value=1000, message="higest book price is 10000")
 	//@Range(min=100, max=10000, message="price range must be between 100-10000")
 	private int price;
-	
+	private Blob picture;
 	
 	
 	public int getCode() {
@@ -57,10 +57,19 @@ public class Book {
 	public void setPrice(int price) {
 		this.price = price;
 	}
+	
+	
+	
+	public Blob getPicture() {
+		return picture;
+	}
+	public void setPicture(Blob picture) {
+		this.picture = picture;
+	}
 	@Override
 	public String toString() {
 		return "Book [code=" + code + ", title=" + title + ", subject=" + subject + ", author=" + author + ", price="
-				+ price + "]";
+				+ price + ", picture=" + picture + "]";
 	}
 	
 	
